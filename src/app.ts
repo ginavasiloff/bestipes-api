@@ -1,7 +1,7 @@
-import * as express from "express";
-import * as bodyParser from "body-parser";
+import * as express from 'express';
+import * as bodyParser from 'body-parser';
 
-import { Recipes } from "./routes/recipes";
+import { Recipes } from './routes/recipes';
 
 class App {
   public app: express.Application;
@@ -19,8 +19,8 @@ class App {
     //support application/x-www-form-urlencoded post data
     this.app.use(
       bodyParser.urlencoded({
-        extended: false
-      })
+        extended: false,
+      }),
     );
   }
 }
