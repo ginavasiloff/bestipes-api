@@ -1,25 +1,38 @@
 import { Request, Response } from 'express';
-import { fetchRecipes } from '../database';
-
-import recipes = require('../db.json'); //load our local database file
+import { RecipeController } from '../controllers/recipe-controller';
 
 export class Recipes {
+  public recipeController: RecipeController = new RecipeController();
+
   public routes(app): void {
+    app.route('/status').get((req: Request, res: Response) => {
+      res.status(200).send({ status: 'okay' });
+    });
+
     app.route('/recipes').get((req: Request, res: Response) => {
-      res.status(200).send(recipes);
+      this.recipeController.getRecipes(req, res);
     });
+
     app.route('/recipes/:id').get((req: Request, res: Response) => {
-      const id = req.params.id;
-      res.status(200).send(recipes[id]);
+      this.recipeController.getRecipeWithID(req, res);
     });
+
     app.route('/recipes').post((req: Request, res: Response) => {
-      const name = req.body.name;
-      const ingredients = req.body.ingredients;
-      const source = req.body.source;
-      const image = req.body.image;
-      const instructions = req.body.instructions;
-      //TODO: use database
-      res.status(200).send(true);
+      this.recipeController.addNewRecipe(req, res);
     });
+
+    app.route('/recipes/:id').post((req: Request, res: Response) => {
+      this.recipeController.getRecipeWithID(req, res);
+    });
+
+    app.route('/recipes/:id').delete((req: Request, res: Response) => {
+      this.recipeController.deleteRecipe(req, res);
+    });
+
+    app
+      .route('/data/:id/stats/correlations')
+      .get((req: Request, res: Response) => {
+        res.status(200).send({ data: 'stats maybe' });
+      });
   }
 }
