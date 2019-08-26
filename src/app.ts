@@ -3,6 +3,7 @@ import * as bodyParser from 'body-parser';
 import * as mongoose from 'mongoose';
 import { Recipes } from './routes/recipes';
 import * as dotenv from 'dotenv';
+import * as cors from 'cors';
 
 dotenv.config();
 
@@ -14,8 +15,9 @@ class App {
   constructor() {
     this.app = express();
     this.config();
-    this.recipeRoutes.routes(this.app);
     this.mongoSetup(this.mongoUrl);
+    this.app.use(cors());
+    this.recipeRoutes.routes(this.app);
   }
 
   private config(): void {
