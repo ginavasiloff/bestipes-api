@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 
 import { RecipeSchema } from '../models/recipes';
 
-const Recipe = mongoose.model('Data', RecipeSchema);
+const Recipe = mongoose.model('Recipe', RecipeSchema);
 
 export class RecipeController {
   public addNewRecipe(req: Request, res: Response) {
