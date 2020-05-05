@@ -1,20 +1,24 @@
-import * as mongoose from 'mongoose';
-import { Request, Response } from 'express';
+import * as mongoose from "mongoose";
+import { Request, Response } from "express";
 
-import { RecipeSchema } from '../models/recipes';
+import { RecipeSchema } from "../models/recipes";
 
-const Recipe = mongoose.model('Recipe', RecipeSchema);
+const Recipe = mongoose.model("Recipe", RecipeSchema);
 
 export class RecipeController {
+  // This is broken.
   public addNewRecipe(req: Request, res: Response) {
-    let newRecipe = new Recipe(req.body);
-
-    newRecipe.save((err, data) => {
-      if (err) {
-        res.send(err);
-      }
-      res.json(data);
-    });
+    const newRecipe = new Recipe(req.body);
+    res
+      .status(501)
+      .json({ message: "Add New Recipes is not yet implemented." })
+      .send();
+    // newRecipe.save((err, data) => {
+    //   if (err) {
+    //     res.send(err);
+    //   }
+    //   res.json(data);
+    // });
   }
 
   public getRecipes(req: Request, res: Response) {
@@ -36,11 +40,16 @@ export class RecipeController {
   }
 
   public deleteRecipe(req: Request, res: Response) {
-    Recipe.remove({ _id: req.params.id }, err => {
+    Recipe.remove({ _id: req.params.id }, (err) => {
       if (err) {
         res.send(err);
       }
-      res.json({ message: 'Successfully deleted recipe!' });
+      res.json({ message: "Successfully deleted recipe!" });
     });
   }
 }
+// app.get('/api/private', checkJwt, function(req, res) {
+//   res.json({
+//     message: 'Hello from a private endpoint! You need to be authenticated to see this.'
+//   });
+// });

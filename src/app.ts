@@ -1,16 +1,17 @@
-import * as express from 'express';
-import * as bodyParser from 'body-parser';
-import * as mongoose from 'mongoose';
-import { Recipes } from './routes/recipes';
-import * as dotenv from 'dotenv';
-import * as cors from 'cors';
+import * as express from "express";
+import * as bodyParser from "body-parser";
+import * as mongoose from "mongoose";
+import { Recipes } from "./routes/recipes";
+import * as cors from "cors";
+import * as dotenv from "dotenv";
+import { jwtCheck } from "./controllers/auth";
 
 dotenv.config();
-
-class App {
+export class App {
   public app: express.Application;
   public recipeRoutes: Recipes = new Recipes();
   public mongoUrl: string = process.env.MONGO_URL;
+  public jwtCheck: object;
 
   constructor() {
     this.app = express();
@@ -24,7 +25,7 @@ class App {
     this.app.use(bodyParser.json());
     this.app.use(
       bodyParser.urlencoded({
-        extended: false
+        extended: false,
       })
     );
   }
@@ -33,5 +34,3 @@ class App {
     mongoose.connect(url, { useNewUrlParser: true });
   }
 }
-
-export default new App().app;
