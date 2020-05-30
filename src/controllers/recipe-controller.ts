@@ -1,5 +1,6 @@
 import * as mongoose from "mongoose";
 import { Request, Response } from "express";
+import * as bent from "bent";
 
 import { RecipeSchema } from "../models/recipes";
 
@@ -13,12 +14,25 @@ export class RecipeController {
       .status(501)
       .json({ message: "Add New Recipes is not yet implemented." })
       .send();
-    // newRecipe.save((err, data) => {
-    //   if (err) {
-    //     res.send(err);
-    //   }
-    //   res.json(data);
-    // });
+  }
+  // newRecipe.save((err, data) => {
+  //   if (err) {
+  //     res.send(err);
+  //   }
+  //   res.json(data);
+  // });
+
+  public async uploadRecipe(req: Request, res: Response) {
+    const uploadUrl = req.body.uploadUrl;
+    const getBuffer = bent("buffer");
+    const page = await getBuffer(uploadUrl, "GET");
+    console.log(page.toString());
+    res
+      .status(200)
+      .json({
+        message: `Add New Recipes is not yet implemented.`,
+      })
+      .send();
   }
 
   public getRecipes(req: Request, res: Response) {
@@ -48,8 +62,3 @@ export class RecipeController {
     });
   }
 }
-// app.get('/api/private', checkJwt, function(req, res) {
-//   res.json({
-//     message: 'Hello from a private endpoint! You need to be authenticated to see this.'
-//   });
-// });
