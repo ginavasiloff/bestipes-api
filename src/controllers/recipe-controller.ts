@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import * as bent from "bent";
 
 import { RecipeSchema } from "../models/recipes";
+import { getRecipes } from "./read-source";
 
 const Recipe = mongoose.model("Recipe", RecipeSchema);
 
@@ -26,7 +27,9 @@ export class RecipeController {
     const uploadUrl = req.body.uploadUrl;
     const getBuffer = bent("buffer");
     const page = await getBuffer(uploadUrl, "GET");
-    console.log(page.toString());
+    // const schema = page.toStrinfind(`"@type":"Recipe"`);
+    const source = page.toString();
+    const recipe = getRecipes(source);
     res
       .status(200)
       .json({
