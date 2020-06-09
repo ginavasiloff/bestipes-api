@@ -1,7 +1,6 @@
 import * as mongoose from "mongoose";
 import { Request, Response } from "express";
-import * as bent from "bent";
-
+import * as fetch from "node-fetch";
 import { RecipeSchema } from "../models/recipes";
 import { getRecipes } from "./read-source";
 
@@ -24,18 +23,20 @@ export class RecipeController {
   // });
 
   public async uploadRecipe(req: Request, res: Response) {
-    const uploadUrl = req.body.uploadUrl;
-    const getBuffer = bent("buffer");
-    const page = await getBuffer(uploadUrl, "GET");
-    // const schema = page.toStrinfind(`"@type":"Recipe"`);
-    const source = page.toString();
-    const recipe = getRecipes(source);
-    res
-      .status(200)
-      .json({
-        message: `Add New Recipes is not yet implemented.`,
-      })
-      .send();
+    try {
+      const uploadUrl = req.body.uploadUrl;
+      const src = await fetch(uploadUrl);
+      const page = await src.text();
+      const recipe = getRecipes(page);
+      res
+        .status(200)
+        .json({
+          message: `Add New Recipes is not yet implemented.`,
+        })
+        .send();
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   public getRecipes(req: Request, res: Response) {
